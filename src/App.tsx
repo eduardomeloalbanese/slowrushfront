@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
+import { Cadastro } from './pages/Cadastro';
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
       {/* 2. O "Miolo" (recheio) troca baseado na URL */}
       <main className="flex-grow container mx-auto px-4 py-8">
         <Routes>
-          <Route path="/" element={<Login />} />
-          
+          <Route path="/" element={<Cadastro />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/homepage" element={<Home/>} />
           <Route path="*" element={<div className="text-center mt-10 text-red-500 pt-16">404 - Não encontrado</div>} />
         </Routes>
