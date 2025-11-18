@@ -4,35 +4,97 @@ import { useNavigate } from 'react-router-dom';
 export function Checkout() {
   const navigate = useNavigate();
   
-  // Estado para controlar qual etapa está aparecendo (1, 2 ou 3)
+  // Controle das etapas (1, 2 ou 3)
   const [currentStep, setCurrentStep] = useState(1);
   
-  // Estado para guardar as respostas
+  // Estado dos dados do formulário
   const [formData, setFormData] = useState({
     horasTrabalhadas: '',
-    intensidadeReunioes: '', // Baixa, Média, Alta
-    sentimento: '', // Feliz, Cansado, Estressado, etc.
+    intensidadeReunioes: '', // Ex: 'Baixa (0-2h)'
+    sentimento: '',          // Ex: 'rad', 'stress'
     comentario: ''
   });
 
-  // Função para atualizar os dados
+  // Atualiza o estado conforme o usuário digita/clica
   const updateData = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  // Função para enviar (Simulando API)
+  // --- CONVERSORES PARA A API (O Java espera números) ---
+
+  // Converte o código do sentimento para número (1 a 5)
+  const converterSentimento = (sentimento: string) => {
+    switch (sentimento) {
+      case 'rad': return 1;   // Ótimo
+      case 'ok': return 2;    // Bem
+      case 'tired': return 4; // Cansado
+      case 'stress': return 5;// Estressado
+      default: return 3;      // Neutro
+    }
+  };
+
+  // Converte a string de reuniões para um número estimado
+  const converterReunioes = (intensidade: string) => {
+      if (intensidade.includes('Baixa')) return 2;
+      if (intensidade.includes('Média')) return 4;
+      if (intensidade.includes('Alta')) return 8;
+      return 0;
+  };
+
+  // --- FUNÇÃO DE ENVIO (CONEXÃO COM A API) ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Aqui entraria o fetch() para sua API Java
-    console.log("Dados do Check-out:", formData);
+    // 1. Prepara o objeto JSON para o Java
+    const dadosParaAPI = {
+        horasTrabalhadas: parseFloat(formData.horasTrabalhadas),
+        numeroReunioes: converterReunioes(formData.intensidadeReunioes),
+        nivelEstresse: converterSentimento(formData.sentimento),
+        // Opcional: se quiser enviar o comentário, adicione no DTO do Java ou concatene aqui
+        // descricao: formData.comentario 
+    };
 
-    // Feedback visual simples
-    alert("Check-out realizado! Bom descanso.");
-    navigate('/'); // Volta para a Home ou Login
+    console.log("Enviando payload:", dadosParaAPI);
+
+    try {
+        // 2. Pega o link do Render do arquivo .env
+        const baseUrl = import.meta.env.VITE_API_URL; 
+
+        // 3. Faz a requisição POST
+        const response = await fetch(`${baseUrl}/api/registros`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dadosParaAPI)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro na API: ${response.status}`);
+        }
+
+        // 4. Recebe a resposta (FeedbackDTO)
+        const feedback = await response.json();
+
+        // 5. Exibe o Alerta Inteligente (A lógica do SlowRush)
+        if (feedback.alertaCritico) {
+            // Cenário de Burnout (Vermelho)
+            alert(`⚠️ ALERTA DE BEM-ESTAR:\n\n${feedback.mensagem}`);
+        } else {
+            // Cenário Normal (Verde)
+            alert(`✅ Tudo certo:\n\n${feedback.mensagem}`);
+        }
+
+        // Redireciona para a home
+        navigate('/'); 
+
+    } catch (error) {
+        console.error("Erro ao enviar:", error);
+        alert("Erro de conexão. Verifique se a API está rodando no Render.");
+    }
   };
 
-  // Ícones SVG para cada humor
+  // Configuração visual dos ícones de humor
   const moods = [
     { value: 'rad', label: 'Radiante', icon: '🤩', color: 'bg-emerald-100 border-emerald-500 text-emerald-700' },
     { value: 'ok', label: 'Bem', icon: '🙂', color: 'bg-blue-100 border-blue-500 text-blue-700' },
@@ -44,12 +106,12 @@ export function Checkout() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12 animate-fade-in">
       <div className="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
         
-        {/* --- CABEÇALHO E BARRA DE PROGRESSO --- */}
+        {/* CABEÇALHO AZUL */}
         <div className="bg-blue-600 dark:bg-blue-800 p-6 text-white text-center">
           <h1 className="text-2xl font-bold mb-2">Check-out Diário</h1>
           <p className="opacity-90 text-sm">Registre seu dia para cuidarmos de você.</p>
           
-          {/* Stepper Manual (Sem biblioteca) */}
+          {/* Barra de Progresso (Bolinhas) */}
           <div className="flex items-center justify-center mt-6 gap-4">
             {[1, 2, 3].map((step) => (
               <div key={step} className="flex items-center">
@@ -57,12 +119,11 @@ export function Checkout() {
                   step === currentStep 
                     ? 'bg-white text-blue-600 scale-110 shadow-lg' 
                     : step < currentStep 
-                      ? 'bg-emerald-400 text-white' // Já passou
-                      : 'bg-blue-400/50 text-blue-100' // Futuro
+                      ? 'bg-emerald-400 text-white' 
+                      : 'bg-blue-400/50 text-blue-100'
                 }`}>
                   {step < currentStep ? '✓' : step}
                 </div>
-                {/* Linha conectora (menos no último) */}
                 {step < 3 && (
                   <div className={`w-12 h-1 rounded mx-2 ${
                     step < currentStep ? 'bg-emerald-400' : 'bg-blue-400/50'
@@ -73,12 +134,12 @@ export function Checkout() {
           </div>
         </div>
 
-        {/* --- CONTEÚDO DO FORMULÁRIO --- */}
+        {/* FORMULÁRIO */}
         <form onSubmit={handleSubmit} className="p-8">
           
-          {/* ETAPA 1: HORAS (Foco em Carga de Trabalho) */}
+          {/* PASSO 1: HORAS TRABALHADAS */}
           {currentStep === 1 && (
-            <div className="animate-fade-in space-y-6">
+            <div className="space-y-6">
               <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                 <span className="text-2xl">⏱️</span> Como foi sua carga horária?
               </h2>
@@ -103,9 +164,9 @@ export function Checkout() {
             </div>
           )}
 
-          {/* ETAPA 2: REUNIÕES (Foco em Toxicidade de Agenda) */}
+          {/* PASSO 2: REUNIÕES */}
           {currentStep === 2 && (
-            <div className="animate-fade-in space-y-6">
+            <div className="space-y-6">
               <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                 <span className="text-2xl">📅</span> Intensidade de Reuniões
               </h2>
@@ -131,9 +192,9 @@ export function Checkout() {
             </div>
           )}
 
-          {/* ETAPA 3: SENTIMENTO (Dados Qualitativos) */}
+          {/* PASSO 3: SENTIMENTO */}
           {currentStep === 3 && (
-            <div className="animate-fade-in space-y-6">
+            <div className="space-y-6">
               <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                 <span className="text-2xl">🧠</span> Como você se sente agora?
               </h2>
@@ -169,7 +230,7 @@ export function Checkout() {
             </div>
           )}
 
-          {/* --- BOTÕES DE NAVEGAÇÃO --- */}
+          {/* BOTÕES DE NAVEGAÇÃO (VOLTAR / PRÓXIMO / ENVIAR) */}
           <div className="flex justify-between mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
             {currentStep > 1 ? (
               <button
@@ -180,14 +241,14 @@ export function Checkout() {
                 Voltar
               </button>
             ) : (
-              <div></div> /* Espaçador vazio */
+              <div></div>
             )}
 
             {currentStep < 3 ? (
               <button
                 type="button"
                 onClick={() => setCurrentStep(prev => prev + 1)}
-                disabled={currentStep === 1 && !formData.horasTrabalhadas} // Validação simples
+                disabled={currentStep === 1 && !formData.horasTrabalhadas}
                 className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold rounded-lg shadow-md transition-all"
               >
                 Próximo
