@@ -4,6 +4,7 @@ import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Cadastro } from './pages/Cadastro';
+import { Checkout } from './pages/Checkout';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Cadastro />} />
           <Route path="/login" element={<Login />} />
           <Route path="/homepage" element={<Home/>} />
+          <Route path="/checkout" element={<Checkout/>} />
           <Route path="*" element={<div className="text-center mt-10 text-red-500 pt-16">404 - Não encontrado</div>} />
         </Routes>
       </main>
