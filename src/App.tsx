@@ -6,6 +6,7 @@ import { Login } from './pages/Login';
 import { Cadastro } from './pages/Cadastro';
 import { Checkout } from './pages/Checkout';
 import { Integrantes } from './pages/integrantes';
+import { Contato } from './pages/Contato';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/homepage" element={<Home/>} />
           <Route path="/checkout" element={<Checkout/>} />
           <Route path="/integrantes" element={<Integrantes />} />
+          <Route path="/contato" element={<Contato />} />
           <Route path="*" element={<div className="text-center mt-10 text-red-500 pt-16">404 - Não encontrado</div>} />
         </Routes>
       </main>
