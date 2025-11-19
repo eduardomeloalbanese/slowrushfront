@@ -29,7 +29,6 @@ export const Navbar = () => {
               <Link to="/contato" className="text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md font-medium transition-colors">Contato</Link>
               <Link to="/checkout" className="text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md font-medium transition-colors">Checkout</Link>
               <Link to="/dashboard" className="text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md font-medium transition-colors">Dashboard</Link>
-              
               {/* Botão de Tema */}
               <button
                 onClick={toggleTheme}
