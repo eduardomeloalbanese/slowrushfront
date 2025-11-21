@@ -12,11 +12,10 @@ export function Checkout() {
     funcionario: '', 
     horasTrabalhadas: '',
     intensidadeReunioes: '', 
-    sentimento: '', // Começa vazio
+    sentimento: '', 
     comentario: ''
   });
 
-  // Scroll suave para o topo ao mudar de etapa
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentStep]);
@@ -25,16 +24,13 @@ export function Checkout() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  // Função de envio real para a API Java
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Impede o reload da página
-    
-    // Confirmação simples antes de enviar
+    e.preventDefault();
+   
     if (!window.confirm("Deseja finalizar e enviar seu check-out?")) return;
 
     setIsSending(true);
     
-    // Payload formatado para o Java
     const payload = {
       funcionario: formData.funcionario || "Colaborador Anônimo",
       horasTrabalhadas: formData.horasTrabalhadas,
@@ -58,7 +54,7 @@ export function Checkout() {
         throw new Error(`Erro no envio: ${response.status}`);
       }
 
-      // Se der certo
+      
       alert("Check-out salvo com sucesso! Veja seu registro no Dashboard.");
       navigate('/dashboard');
 
@@ -70,7 +66,6 @@ export function Checkout() {
     }
   };
 
-  // Opções de Humor com Ícones
   const moods = [
     { value: 'rad', label: 'Radiante', icon: '🤩', color: 'bg-emerald-100 border-emerald-500 text-emerald-700' },
     { value: 'ok', label: 'Bem', icon: '🙂', color: 'bg-blue-100 border-blue-500 text-blue-700' },
@@ -78,7 +73,7 @@ export function Checkout() {
     { value: 'stress', label: 'Estressado', icon: '🤯', color: 'bg-red-100 border-red-500 text-red-700' },
   ];
 
-  // Validação final: Só permite enviar se tiver sentimento selecionado
+ 
   const isFormValid = formData.horasTrabalhadas && formData.sentimento;
 
   return (
@@ -113,7 +108,6 @@ export function Checkout() {
         <form 
           onSubmit={handleSubmit} 
           className="p-8"
-          // Bloqueia o envio acidental com ENTER
           onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}
         >
           
@@ -158,7 +152,7 @@ export function Checkout() {
               <div className="grid grid-cols-1 gap-3">
                 {['Baixa (0-2h)', 'Média (2-4h)', 'Alta (+4h)'].map((nivel) => (
                   <button
-                    type="button" // Garante que é botão normal, não submit
+                    type="button" 
                     key={nivel}
                     onClick={() => updateData('intensidadeReunioes', nivel)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${formData.intensidadeReunioes === nivel ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-bold' : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:text-white'}`}
@@ -179,7 +173,7 @@ export function Checkout() {
               <div className="grid grid-cols-2 gap-4">
                 {moods.map((m) => (
                   <button
-                    type="button" // Garante que é botão normal, não submit
+                    type="button" 
                     key={m.value}
                     onClick={() => updateData('sentimento', m.value)}
                     className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all hover:scale-105 ${formData.sentimento === m.value ? m.color + ' font-bold scale-105' : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 grayscale hover:grayscale-0'}`}
@@ -202,7 +196,6 @@ export function Checkout() {
           {/* --- RODAPÉ COM BOTÕES DE AÇÃO --- */}
           <div className="flex justify-between mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
             
-            {/* Botão Voltar (só aparece a partir do passo 2) */}
             {currentStep > 1 ? (
               <button 
                 type="button" 
@@ -213,7 +206,6 @@ export function Checkout() {
               </button>
             ) : <div></div>}
 
-            {/* Botão Próximo ou Finalizar */}
             {currentStep < 3 ? (
               <button 
                 type="button" 
@@ -226,8 +218,8 @@ export function Checkout() {
               </button>
             ) : (
               <button 
-                type="submit" // Único botão que envia de verdade
-                disabled={isSending || !isFormValid} // Desabilita se enviando ou se formulário inválido (sem sentimento)
+                type="submit" 
+                disabled={isSending || !isFormValid} 
                 className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-lg shadow-md transition-all transform hover:scale-105 flex items-center gap-2"
               >
                 {isSending ? 'Enviando...' : 'Finalizar'}
