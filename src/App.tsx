@@ -28,6 +28,7 @@ function App() {
           <Route path="/integrantes" element={<Integrantes />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/sobre" element={<Sobre />} />
+          <Route path="/cadastro" element={<Cadastro />} />
           <Route path="*" element={<div className="text-center mt-10 text-red-500 pt-16">404 - Não encontrado</div>} />
         </Routes>
       </main>
