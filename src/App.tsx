@@ -8,6 +8,7 @@ import { Checkout } from './pages/Checkout';
 import { Integrantes } from './pages/integrantes';
 import { Contato } from './pages/Contato';
 import { Dashboard } from './pages/Dashboard';
+import{ Sobre } from './pages/Sobre';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/integrantes" element={<Integrantes />} />
           <Route path="/contato" element={<Contato />} />
+          <Route path="/sobre" element={<Sobre />} />
           <Route path="*" element={<div className="text-center mt-10 text-red-500 pt-16">404 - Não encontrado</div>} />
         </Routes>
       </main>
