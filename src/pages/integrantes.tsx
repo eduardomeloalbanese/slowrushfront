@@ -114,7 +114,7 @@ export const Integrantes = () => {
         </div>
         
         <div className="text-center mt-12">
-          <Link to="/" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+          <Link to="/homepage" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
             ← Voltar para a Home
           </Link>
         </div>

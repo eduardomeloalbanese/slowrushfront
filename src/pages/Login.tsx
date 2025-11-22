@@ -11,13 +11,11 @@ export function Login() {
     e.preventDefault();
     
     // Redirecionamento baseado no tipo de usuário
-    if (userType === 'gestor') {
+      if (userType === 'gestor') {
       navigate('/dashboard');
     } else {
-      // Futura página do funcionário (Check-out diário)
-      alert("Login de Colaborador! Redirecionando para área de Check-out...");
-      navigate('/homepage'); // Exemplo de redirecionamento
-    }
+      navigate('/checkout');
+}
   };
 
   return (
