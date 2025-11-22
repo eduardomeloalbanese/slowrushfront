@@ -16,7 +16,7 @@ const equipe: Integrante[] = [
     nome: "Eduardo de Melo Albanese",
     rm: "RM561790",
     turma: "1TDSPX",
-    fotoUrl: "public/fotos/foto_eduardo (1).png", // Certifique-se de que o arquivo existe em public/fotos/
+    fotoUrl: "public/fotos/foto_eduardo.png", // Certifique-se de que o arquivo existe em public/fotos/
     githubUrl: "https://github.com/eduardomeloalbanese",
     linkedinUrl: "https://www.linkedin.com/in/eduardo-de-melo-albanese-605043236/",
   },
@@ -24,7 +24,7 @@ const equipe: Integrante[] = [
     nome: "Guilherme de Andrade Martini",
     rm: "RM566087",
     turma: "1TDSPX",
-    fotoUrl: "public/fotos/foto_guilherme (1).jpg",
+    fotoUrl: "public/fotos/foto_guilherme.jpg",
     githubUrl: "https://github.com/Guilhermedev2807",
     linkedinUrl: "https://www.linkedin.com/in/guilherme-de-andrade-martini-994648348",
   },
@@ -32,7 +32,7 @@ const equipe: Integrante[] = [
     nome: "Nathan Gonçalves Pereira Mendes",
     rm: "RM564666",
     turma: "1TDSPX",
-    fotoUrl: "public/fotos/foto_nathan (1).jpg",
+    fotoUrl: "public/fotos/foto_nathan.jpg",
     githubUrl: "http://github.com/nathangpm",
     linkedinUrl: "https://www.linkedin.com/in/nathangpmendes",
   },
