@@ -1,73 +1,158 @@
-# React + TypeScript + Vite
+# 🌐 SlowRush - Global Solution 2025 (Front-End)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Solução de **bem-estar corporativo** para prevenção de **Burnout** através de monitoramento inteligente de dados.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📋 Sumário
 
-## React Compiler
+- [Sobre o Projeto](#-sobre-o-projeto)
+- [Arquitetura da Solução](#-arquitetura-da-solução)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Instalação e Execução](#-instalação-e-execução)
+- [Como Usar](#-como-usar)
+- [Endpoints da API](#-endpoints-da-api)
+- [Integrantes](#-integrantes)
+- [Vídeo Demo](#-vídeo-demo)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 💡 Sobre o Projeto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+O **SlowRush** é uma plataforma **B2B SaaS** desenvolvida para combater a *toxicidade de agenda* e o **Burnout** em ambientes corporativos híbridos e remotos.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+A solução atua em duas frentes:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 👤 Para o Colaborador  
+Um **Assistente de Check-out Diário** que coleta informações sobre:  
+- Horas trabalhadas  
+- Intensidade de reuniões  
+- Sentimento ao fim do expediente  
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 👨‍💼 Para o Gestor  
+Um **Dashboard Analítico** que transforma estes dados em indicadores de risco (Burnout), permitindo ações preventivas e reduzindo o turnover.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🏗️ Arquitetura da Solução
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+A aplicação segue uma arquitetura moderna, desacoplada e escalável:
+
+### **Front-end (Este Repositório)**  
+SPA criada com **React + Vite**, focada em performance e experiência do usuário.
+
+### **Back-end (API)**  
+Desenvolvido em **Java + Quarkus**, hospedado no Render.
+
+### **Banco de Dados**  
+- Oracle Database (FIAP)  
+- H2 (Testes)
+
+---
+
+## 📁 Estrutura de Pastas (Front-end)
+src/
+├── components/ # Componentes reutilizáveis (Navbar, Footer...)
+├── contexts/ # Contexto de Tema (Dark/Light Mode)
+├── pages/ # Telas da aplicação (Login, Dashboard, Checkout...)
+│ ├── Dashboard.tsx # Lógica de gráficos + GET/DELETE
+│ ├── Checkout.tsx # Formulário + POST
+│ └── ...
+├── App.tsx # Configuração de Rotas (React Router DOM)
+└── main.tsx # Ponto de entrada da aplicação
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+### **Front-End**
+- React  
+- Vite  
+- TypeScript  
+- TailwindCSS  
+- Context API  
+- React Router DOM  
+- Fetch API  
+
+### **Back-End (Integração)**
+- Java 17  
+- Quarkus  
+- Maven  
+
+---
+
+## 🔧 Instalação e Execução
+
+### **Pré-requisitos**
+- Node.js 18+
+- NPM ou Yarn
+
+### **Passo a Passo**
+
+1. **Clone o repositório**
+```bash
+git clone https://github.com/eduardomeloalbanese/slowrushfront.git
+Acesse o diretório
+
+bash
+Copiar código
+cd slowrushfront
+Instale as dependências
+
+bash
+Copiar código
+npm install
+Configure o arquivo .env
+
+ini
+Copiar código
+VITE_API_URL=https://slowrush-0d63.onrender.com
+Execute o projeto
+
+bash
+Copiar código
+npm run dev
+Acesse em: http://localhost:5173
+
+📱 Como Usar
+🔗 Deploy
+👉 https://slowrushfront-t6fd.vercel.app
+
+👤 Colaborador
+Preencha as 3 etapas do Check-out
+
+Envie os dados (POST)
+
+👨‍💼 Gestor
+Acesse o Dashboard
+
+Visualize gráficos + tabela
+
+Edite ou exclua registros (PUT/DELETE)
+
+🌙 Tema (Dark/Light)
+Clique no ícone (sol/lua) para alternar o tema global.
+
+📡 Endpoints da API
+URL Base:
+
+arduino
+Copiar código
+https://slowrush-0d63.onrender.com
+Método	Rota	Descrição
+GET	/api/checkouts	Retorna todos os registros
+POST	/api/checkouts	Salva um novo check-out
+PUT	/api/checkouts/{id}	Atualiza um registro
+DELETE	/api/checkouts/{id}	Remove um registro
+
+👨‍💻 Integrantes (Turma 1TDSPX)
+Nome	RM	GitHub	LinkedIn
+Eduardo de Melo Albanese	RM561790	GitHub	LinkedIn
+Guilherme de Andrade Martini	RM566087	GitHub	LinkedIn
+Nathan Gonçalves Pereira Mendes	RM564666	GitHub	LinkedIn
+
+Adicione os links reais aos perfis GitHub e LinkedIn.
+
+🎥 Vídeo Demo
+📺 Assista no YouTube:
+👉 https://youtu.be/Zvv0O1R60b4?si=hfEWidge93s2RjxA
